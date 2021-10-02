@@ -1,0 +1,155 @@
+.loginPage {
+  display: flex;
+  height: 100vh;
+}
+.loginLeft,
+.loginRight {
+  width: 50%;
+}
+.loginLeft {
+  background: #03a438;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loginLeft img {
+  width: 65%;
+}
+
+.loginRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.rightContent {
+  /* background: #fecbc5; */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 0 0 8em;
+}
+.rightTop {
+  position: absolute;
+  top: 7vh;
+}
+.rightTop img {
+  margin-bottom: 1em;
+}
+.subtxt {
+  font-size: 16px;
+  font-weight: 200;
+}
+.titleBg {
+  font-weight: bold;
+  font-size: 48px;
+}
+.rightBody {
+  margin-top: 2em;
+}
+.loginForm {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+}
+.inputFields {
+  border: 1px solid #979797;
+  border-radius: 10px;
+  width: 26.5vw;
+  height: 45px;
+  padding: 0.2em 0.5em;
+  margin: 0.5em 0 1em 0;
+  transition: 0.2s ease-in;
+  font-size: 16px;
+}
+.inputFieldsInvalid {
+  border: 2px solid #dd0505;
+  border-radius: 10px;
+  width: 26.5vw;
+  height: 45px;
+  padding: 0.2em 0.5em;
+  margin: 0.5em 0 1em 0;
+  transition: 0.2s ease-in;
+  font-size: 16px;
+}
+.inputFields:focus {
+  border: 4px solid #e8e8e8;
+  transition: 0.2s ease-in;
+}
+.submitBtn {
+  background: #03a438;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  width: 26.5vw;
+  height: 45px;
+  padding: 0.2em 0.5em;
+  transition: 0.3s ease-in;
+}
+.submitBtn:hover {
+  transition: 0.3s ease-in;
+  background: #028b30;
+}
+.inputFields,
+.submitBtn {
+  outline: none;
+}
+
+.errorTxt {
+  color: #dd0505;
+  text-align: center;
+  width: 60%;
+}
+.btmTxt {
+  text-align: center;
+  color: #03a438;
+  font-size: 16px;
+  /* background: lavender; */
+  width: 60%;
+  margin-top: 1.5em;
+}
+
+@media (max-width: 1350px) {
+  .loginRight {
+    /* background: lavender; */
+    justify-content: flex-start;
+  }
+  .rightContent {
+    padding: 2em 0 0 8em;
+  }
+  .rightTop {
+    position: relative;
+    top: 0;
+    margin: 2em 0 3.5em 0;
+  }
+  .rightBody {
+    margin-top: 0;
+  }
+}
+@media (max-width: 850px) {
+  .loginPage {
+    flex-direction: column;
+  }
+  .loginLeft {
+    display: none;
+  }
+  .loginRight {
+    width: 100%;
+  }
+  .rightContent {
+    align-items: center;
+    justify-content: center;
+    /* background: lavender; */
+    padding: 0;
+  }
+  .rightBody {
+    margin: 3em 0;
+  }
+  .inputFields,
+  .submitBtn {
+    width: 60vw;
+  }
+  .btmTxt {
+    margin-top: 3em;
+    width: 100%;
+  }
+}

@@ -1,0 +1,46 @@
+.menuContainer {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  width: 272px;
+  height: 100%;
+  /* box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1); */
+  padding: 2em 1.5em;
+}
+.menuTop img {
+  width: 60%;
+}
+
+.menuList {
+  margin-top: 5em;
+  /* background: cornsilk; */
+  width: 90%;
+}
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6em;
+  cursor: pointer;
+}
+.menuLeft {
+  display: flex;
+  align-items: center;
+}
+.iconBox {
+  /* background: #03a438; */
+  border-radius: 10px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.greenBack {
+  background: #03a438;
+}
+.textBox {
+  margin-left: 1em;
+}
