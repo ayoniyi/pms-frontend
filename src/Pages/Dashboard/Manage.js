@@ -25,8 +25,8 @@ const Manage = () => {
     setIsLoading(true)
     const loadPatients = async () => {
       try {
-        setBaseUrl('http://localhost:5000')
-        const baseUrlReq = 'http://localhost:5000'
+        setBaseUrl('https://pms-backend-v1.herokuapp.com')
+        const baseUrlReq = 'https://pms-backend-v1.herokuapp.com'
         const config = {
           headers: { 'content-type': 'multipart/form-data' },
         }

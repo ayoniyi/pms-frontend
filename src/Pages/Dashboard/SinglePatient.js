@@ -36,16 +36,18 @@ const SinglePatient = () => {
   useEffect(() => {
     setIsLoading(true)
     const loadpatient = async () => {
-      setBaseUrl('http://localhost:5000')
-      const baseUrlReq = 'http://localhost:5000'
+      setBaseUrl('https://pms-backend-v1.herokuapp.com')
+      const baseUrlReq = 'https://pms-backend-v1.herokuapp.com'
       try {
         const patientReq = await axios(`${baseUrlReq}/patients/id/${patientId}`)
         console.log(patientReq.data)
         setPatientData(patientReq.data)
         //
 
-        setEmail(patientReq.data.email)
-        setHealthBio(patientReq.data.healthBio)
+        setEmail(patientReq.data.email || '')
+        setHealthBio(patientReq.data.healthBio || '')
+
+        // setHealthBio(patientReq.data.healthBio || '')
 
         //console.log(email, ' ', healthBio)
 
@@ -99,44 +101,51 @@ const SinglePatient = () => {
     setIsLoading(true)
 
     try {
-      //setBaseUrl('http://localhost:5000')
-      const baseUrlReq = 'http://localhost:5000'
+      // setBaseUrl('https://pms-backend-v1.herokuapp.com')
+      const baseUrlReq = 'https://pms-backend-v1.herokuapp.com'
 
-      if (fileUp === '') {
-        let patientData = {
-          email,
-          healthBio,
-        }
-      } else {
-        let patientData = new FormData()
-
-        patientData.append('email', 'pc@mail.co')
-        patientData.append('healthBio', healthBio)
-        patientData.append('avatar', fileToUp, fileToUpName)
+      const patientData = {
+        email,
+        healthBio,
       }
-
       const updatePatientReq = await axios.patch(
         `${baseUrlReq}/patients/id/${patientId}`,
         patientData,
       )
 
       console.log('updated', updatePatientReq.data)
+      console.log('mail=>', email, 'pass=>', healthBio)
+      console.log('data...', patientData)
+
+      if (fileUp !== '') {
+        let patientPhoto = new FormData()
+        patientPhoto.append('avatar', fileToUp, fileToUpName)
+
+        const updatePatientPhoto = await axios.patch(
+          `${baseUrlReq}/patients/id/${patientId}/photo`,
+          patientPhoto,
+        )
+
+        console.log('updated', updatePatientPhoto.data)
+      }
 
       setIsLoading(false)
       setSuccess(true)
+      setFail(false)
 
       setEmail('')
       setHealthBio('')
       setFileUp('')
 
-      // setTimeout(() => {
-      //   window.location.reload()
-      // }, 3000)
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500)
 
       //history.push(`/dashboard/manage/${patientId}`)
     } catch (err) {
       setIsLoading(false)
       setFail(true)
+      setSuccess(false)
       console.log(err)
     }
   }
@@ -173,7 +182,9 @@ const SinglePatient = () => {
                   <p>Email</p>
                   <input
                     type="text"
-                    defaultValue={patientData.email}
+                    //defaultValue={patientData.email}
+                    name="email"
+                    value={email}
                     onChange={handleInputs}
                   />
                 </div>
@@ -181,7 +192,9 @@ const SinglePatient = () => {
                   <p>Info</p>
                   <input
                     type="text"
-                    defaultValue={patientData.healthBio}
+                    //defaultValue={patientData.healthBio}
+                    name="healthBio"
+                    value={healthBio}
                     onChange={handleInputs}
                   />
                 </div>
@@ -215,6 +228,8 @@ const SinglePatient = () => {
                   name="fileUpload"
                   className="file-input1"
                   id="file"
+                  //disabled
+                  //required
                   onChange={handleFileChange}
                   //  onChange={this.handleInputs}
                 />

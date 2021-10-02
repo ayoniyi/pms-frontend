@@ -83,7 +83,7 @@ const AddPatient = () => {
 
     try {
       //setBaseUrl('http://localhost:5000')
-      const baseUrlReq = 'http://localhost:5000'
+      const baseUrlReq = 'https://pms-backend-v1.herokuapp.com'
 
       let patientData = new FormData()
 
@@ -107,7 +107,7 @@ const AddPatient = () => {
       )
 
       console.log(addPatientReq.data)
-      console.log(fileToUp)
+      //console.log(fileToUp)
 
       setIsLoading(false)
       setSuccess(true)
@@ -207,6 +207,7 @@ const AddPatient = () => {
                   className="file-input1"
                   id="file"
                   onChange={handleFileChange}
+                  required
                   //  onChange={this.handleInputs}
                 />
                 <p>Click to upload image</p>
