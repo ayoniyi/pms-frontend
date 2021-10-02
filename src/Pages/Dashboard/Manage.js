@@ -18,7 +18,7 @@ const Manage = () => {
   const [patients, setPatients] = useState([])
   const [patientName, setPatientName] = useState('')
   const [baseUrl, setBaseUrl] = useState('')
-  //const [imgErr, setImgErr] = useState(false)
+  const [imgErr, setImgErr] = useState(false)
   //const [defImg, setDefImg ]= useState("");
 
   useEffect(() => {
@@ -34,12 +34,13 @@ const Manage = () => {
           `${baseUrlReq}/patients/${patientName}`,
           config,
         )
-        //console.log(patientsReq.data);
+        console.log(patientsReq.data)
         setPatients(patientsReq.data)
         setIsLoading(false)
+        setImgErr(false)
       } catch (err) {
         //console.log(err);
-        //setImgErr(true)
+        setImgErr(true)
         //setDefImg(User)
       }
     }
@@ -74,7 +75,7 @@ const Manage = () => {
                 {patients.map((patient) => (
                   <div className="resultSingle" key={patient._id}>
                     <div className="avatarBox-sm">
-                      {patient.avatar !== undefined ? (
+                      {imgErr !== true ? (
                         <img
                           src={baseUrl + '/' + patient.avatar}
                           alt={patient.firstName}
