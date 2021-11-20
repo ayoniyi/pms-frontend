@@ -24,7 +24,7 @@ const VisitForm = (props) => {
     const name = e.target.name
 
     if (name === 'doctor') {
-      setDoctor(value)
+      setDoctor(realValue)
       //console.log(value);
     }
     if (name === 'status') {
