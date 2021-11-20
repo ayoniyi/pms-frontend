@@ -17,7 +17,7 @@ const Manage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [patients, setPatients] = useState([])
   const [patientName, setPatientName] = useState('')
-  const [baseUrl, setBaseUrl] = useState('')
+  const [baseUrl, setBaseUrl] = useState(process.env.REACT_APP_API_BASEURL)
   const [imgErr, setImgErr] = useState(false)
   //const [defImg, setDefImg ]= useState("");
 
@@ -79,7 +79,6 @@ const Manage = () => {
                       ) : (
                         <img src={User} alt={patient.firstName} />
                       )}
-                      {/* <img src={patient.avatar} alt={patient.firstName} /> */}
                     </div>
                     <p>{patient._id.substr(0, 11)}</p>
                     <p>{patient.firstName + ' ' + patient.lastName}</p>

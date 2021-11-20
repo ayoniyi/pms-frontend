@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const VisitsTable = (props) => {
-  const [baseUrl, setBaseUrl] = useState('')
+  const [baseUrl, setBaseUrl] = useState(process.env.REACT_APP_API_BASEURL)
   const [visits, setVisits] = useState([])
 
   useEffect(() => {

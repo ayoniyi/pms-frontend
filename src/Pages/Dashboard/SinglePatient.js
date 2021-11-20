@@ -26,7 +26,7 @@ const SinglePatient = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [patientData, setPatientData] = useState([])
-  const [baseUrl, setBaseUrl] = useState('')
+  const [baseUrl, setBaseUrl] = useState(process.env.REACT_APP_API_BASEURL)
   //const [imgErr, setImgErr] = useState(false)
   const [email, setEmail] = useState('')
   //const [healthBio, setHealthBio] = useState('')
