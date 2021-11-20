@@ -18,10 +18,12 @@ const AddPatient = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
-  const [healthBio, setHealthBio] = useState('')
+  const [phone, setPhone] = useState('')
+  const [gender, setGender] = useState('')
+  const [dob, setDob] = useState('')
   const [fileUp, setFileUp] = useState('')
   const [fileToUp, setFileToUp] = useState('')
-  const [fileToUpName, setFileToUpName] = useState('')
+  //const [fileToUpName, setFileToUpName] = useState('')
   const [success, setSuccess] = useState(false)
   const [fail, setFail] = useState(false)
 
@@ -31,7 +33,7 @@ const AddPatient = () => {
 
       await setFileUp(srcMain)
       await setFileToUp(event.target.files[0])
-      await setFileToUpName(event.target.files[0].name)
+      //await setFileToUpName(event.target.files[0].name)
 
       // const imgFormat = new FormData();
       // imgFormat.append(
@@ -40,9 +42,9 @@ const AddPatient = () => {
       //   event.target.files[0].name
       // );
 
-      console.log(srcMain, 'FILE UPP')
-      console.log(event.target.files[0], 'FILE TO UPP')
-      console.log(event.target.files[0].name, 'FILE UPP NAME')
+      // console.log(srcMain, 'FILE UP')
+      // console.log(event.target.files[0], 'FILE TO UP')
+      // console.log(event.target.files[0].name, 'FILE UP NAME')
       //console.log(imgFormat);
     }
   }
@@ -52,7 +54,7 @@ const AddPatient = () => {
     setFail(false)
     let value = e.target.value
     value = value.trim()
-    const realValue = e.target.value
+    //const realValue = e.target.value
     const name = e.target.name
 
     if (name === 'firstName') {
@@ -65,8 +67,14 @@ const AddPatient = () => {
     if (name === 'email') {
       setEmail(value)
     }
-    if (name === 'healthBio') {
-      setHealthBio(realValue)
+    if (name === 'phone') {
+      setPhone(value)
+    }
+    if (name === 'gender') {
+      setGender(value)
+    }
+    if (name === 'dob') {
+      setDob(value)
     }
   }
 
@@ -74,24 +82,36 @@ const AddPatient = () => {
     e.preventDefault()
     setIsLoading(true)
     //setSuccess(false)
-
-    // setBaseUrl("https://pms-app-api00.herokuapp.com");
-
-    //   const config = {
-    //     headers: { 'content-type': 'multipart/form-data' }
-    // }
+    const reqConfig = {
+      headers: { 'content-type': 'multipart/form-data' },
+    }
 
     try {
-      //setBaseUrl('http://localhost:5000')
-      const baseUrlReq = 'https://pms-backend-v1.herokuapp.com'
+      const baseUrlReq = process.env.REACT_APP_API_BASEURL
+
+      const s3UrlReq = await axios(`${baseUrlReq}/s3url`)
+
+      let s3Url = s3UrlReq.data.gurl
+      console.log(s3Url)
+
+      const s3Upload = await axios.put(`${s3Url}`, fileToUp, reqConfig)
+      console.log(s3Upload)
+
+      const s3ImgUrl = s3Url.split('?')[0]
+
+      console.log('im__' + s3ImgUrl)
 
       let patientData = new FormData()
 
       patientData.append('firstName', firstName)
       patientData.append('lastName', lastName)
       patientData.append('email', email)
-      patientData.append('healthBio', healthBio)
-      patientData.append('avatar', fileToUp, fileToUpName)
+      patientData.append('phone', phone)
+      patientData.append('gender', gender)
+      patientData.append('dob', dob)
+
+      //patientData.append('avatar', fileToUp, fileToUpName)
+      patientData.append('avatar', s3ImgUrl)
 
       // const patientData = {
       //   firstName,
@@ -114,7 +134,9 @@ const AddPatient = () => {
       setFirstName('')
       setLastName('')
       setEmail('')
-      setHealthBio('')
+      setPhone('')
+      setGender('')
+      setDob('')
       setFileUp('')
     } catch (err) {
       setIsLoading(false)
@@ -122,6 +144,47 @@ const AddPatient = () => {
       setFail(true)
     }
   }
+
+  // s3 upload
+  // const handleS3 = async () => {
+  //   try {
+  // const files = this.state.fileToUp;
+  // console.log("DOC::: ", this.state.docNumber, files);
+  // const blob = files;
+  // const cleanedFilename = blob.name.replace(/([^a-z0-9]+)/gi, "-");
+  // const imageFormat = blob.type.split("/")[1]
+  // const filename = `${cleanedFilename}.${imageFormat}`;
+  // const fileKey = `verification-docs/${filename}`;
+  // const params = {
+  //     Body: blob,
+  //     Bucket: `${process.env.REACT_APP_DO_BUCKET}`,
+  //     Key: fileKey,
+  //     ACL: "public-read",
+  // };
+  // Sending the file to digital ocean Spaces
+  // s3.putObject(params)
+  //     .on("build", (request) => {
+  //     request.httpRequest.headers.Host = `${process.env.REACT_APP_DO_SPACES_URL}`;
+  //     request.httpRequest.headers["Content-Length"] = blob.size;
+  //     request.httpRequest.headers["Content-Type"] = blob.type;
+  //     request.httpRequest.headers["x-amz-acl"] = "public-read";
+  //     })
+  //    .send((err) => {
+  //     if (err) {
+  //         console.log("ERROR:: ", err);
+  //     } else {
+  //         // If there is no error
+  //         const imageUrl =
+  //         `${process.env.REACT_APP_DO_SPACES_URL}/` + fileKey;
+  //         console.log("IMAGE URL:: ", imageUrl);
+  //         //this.setState({ imageUrl })
+  //         //submitInfo();
+  //     }
+  // });
+  //   } catch (err) {
+  //     console.log('ERROR:: ', err)
+  //   }
+  // }
 
   return (
     <div>
@@ -161,27 +224,52 @@ const AddPatient = () => {
                     />
                   </div>
                 </div>
-                <div className="oneColumn-form">
-                  <p>Email</p>
-                  <input
-                    type="text"
-                    name="email"
-                    value={email}
-                    required
-                    onChange={handleInputs}
-                  />
+                <div className="twoColumn-form">
+                  <div className="twoC-box">
+                    <p>Email</p>
+                    <input
+                      type="text"
+                      //defaultValue={patientData.email}
+                      name="email"
+                      value={email}
+                      onChange={handleInputs}
+                      required
+                    />
+                  </div>
+                  <div className="twoC-box">
+                    <p>Phone</p>
+                    <input
+                      type="text"
+                      //defaultValue={patientData.email}
+                      name="phone"
+                      value={phone}
+                      onChange={handleInputs}
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="oneColumn-form">
-                  <p>Info</p>
-                  <input
-                    type="text"
-                    name="healthBio"
-                    value={healthBio}
-                    required
-                    onChange={handleInputs}
-                  />
+                <div className="twoColumn-form">
+                  <div className="twoC-box">
+                    <p>Gender</p>
+                    <select name="gender" onChange={handleInputs} required>
+                      <option value="">--- Choose Gender ---</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </div>
+                  <div className="twoC-box">
+                    <p>Date of Birth</p>
+                    <input
+                      type="date"
+                      name="dob"
+                      value={dob}
+                      onChange={handleInputs}
+                      required
+                    />
+                  </div>
                 </div>
-                <button className="patBtn">Add</button>
+
+                <button className="patBtn">Add Patient</button>
                 {success && (
                   <div className="successMsgBox">
                     <div className="successMsg">

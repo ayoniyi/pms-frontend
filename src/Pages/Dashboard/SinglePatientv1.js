@@ -8,8 +8,7 @@ import 'animate.css'
 import Loader from '../../Components/Loader'
 import Menu from '../../Components/Menu'
 import Container from '../../Components/Container'
-import VisitForm from '../../Components/VisitForm'
-import VisitsTable from '../../Components/VisitsTable'
+//import MedForm from '../../Components/MedForm'
 
 //assets
 import Back from '../../Assets/images/dashboard/backarrow.svg'
@@ -29,8 +28,7 @@ const SinglePatient = () => {
   const [baseUrl, setBaseUrl] = useState('')
   //const [imgErr, setImgErr] = useState(false)
   const [email, setEmail] = useState('')
-  //const [healthBio, setHealthBio] = useState('')
-  const [phone, setPhone] = useState('')
+  const [healthBio, setHealthBio] = useState('')
   const [fileUp, setFileUp] = useState('')
   const [fileToUp, setFileToUp] = useState('')
   const [fileToUpName, setFileToUpName] = useState('')
@@ -48,8 +46,14 @@ const SinglePatient = () => {
         console.log(patientReq.data)
         setPatientData(patientReq.data)
         //
+
         setEmail(patientReq.data.email || '')
-        setPhone(patientReq.data.phone || '')
+        setHealthBio(patientReq.data.healthBio || '')
+
+        // setHealthBio(patientReq.data.healthBio || '')
+
+        //console.log(email, ' ', healthBio)
+
         setIsLoading(false)
       } catch (err) {
         console.log(err)
@@ -78,7 +82,7 @@ const SinglePatient = () => {
     setFail(false)
     let value = e.target.value
     value = value.trim()
-    //const realValue = e.target.value
+    const realValue = e.target.value
     const name = e.target.name
 
     // if (name === 'firstName') {
@@ -91,8 +95,8 @@ const SinglePatient = () => {
     if (name === 'email') {
       setEmail(value)
     }
-    if (name === 'phone') {
-      setPhone(value)
+    if (name === 'healthBio') {
+      setHealthBio(realValue)
     }
   }
 
@@ -101,13 +105,15 @@ const SinglePatient = () => {
     setIsLoading(true)
 
     try {
-      const baseUrl = process.env.REACT_APP_API_BASEURL
+      const baseUrl = process.env.REACT_APP_API_BASEURL_LOCAL
+      //const baseUrlReq = process.env.REACT_APP_API_BASEURL_LOCAL
       const reqConfig = {
         headers: { 'content-type': 'multipart/form-data' },
       }
+
       const patientData = {
         email,
-        phone,
+        healthBio,
       }
       const updatePatientReq = await axios.patch(
         `${baseUrl}/patients/id/${patientId}`,
@@ -146,9 +152,13 @@ const SinglePatient = () => {
       setSuccess(true)
       setFail(false)
 
-      // setEmail('')
-      // setPhone('')
-      // setFileUp('')
+      setEmail('')
+      setHealthBio('')
+      setFileUp('')
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500)
 
       //history.push(`/dashboard/manage/${patientId}`)
     } catch (err) {
@@ -161,11 +171,6 @@ const SinglePatient = () => {
 
   return (
     <div>
-      {/* Symptoms
-      Diagnosis
-      Status
-      Prescription
-      Doctor */}
       <Menu currentPage={currentPage} />
       <Container className="rm-padding">
         <div className="backTop">
@@ -236,34 +241,22 @@ const SinglePatient = () => {
                       type="text"
                       //defaultValue={patientData.email}
                       name="phone"
-                      value={phone}
-                      onChange={handleInputs}
+                      //value={email}
+                      //onChange={handleInputs}
                     />
                   </div>
                 </div>
-                <div className="twoColumn-form">
-                  <div className="twoC-box">
-                    <p>Gender</p>
-                    <select name="gender" disabled>
-                      <option value={patientData.gender}>
-                        {patientData.gender}
-                      </option>
-                    </select>
-                  </div>
-                  <div className="twoC-box">
-                    <p>Date of Birth</p>
-                    <input
-                      //type="text"
-                      type="date"
-                      //defaultValue={patientData.email}
-                      name="dob"
-                      value={patientData.dob}
-                      disabled
-                    />
-                  </div>
+                <div className="oneColumn-form">
+                  <p>Email</p>
+                  <input
+                    type="text"
+                    //defaultValue={patientData.email}
+                    name="email"
+                    value={email}
+                    onChange={handleInputs}
+                  />
                 </div>
-
-                {/* <div className="oneColumn-form">
+                <div className="oneColumn-form">
                   <p>Info</p>
                   <input
                     type="text"
@@ -272,7 +265,7 @@ const SinglePatient = () => {
                     value={healthBio}
                     onChange={handleInputs}
                   />
-                </div> */}
+                </div>
                 <button className="patBtn">Update</button>
                 {success && (
                   <div className="successMsgBox">
@@ -312,15 +305,7 @@ const SinglePatient = () => {
               </div>
             </form>
           )}
-          {!isLoading && infoTab === 'visits' && (
-            <VisitForm
-              userImg={patientData.avatar}
-              patientId={patientData._id}
-            />
-          )}
-          {!isLoading && infoTab === 'visits' && (
-            <VisitsTable patientId={patientData._id} />
-          )}
+          {/* {!isLoading && infoTab === 'medData' && <MedForm />} */}
         </div>
       </Container>
     </div>

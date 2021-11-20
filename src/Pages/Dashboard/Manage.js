@@ -25,13 +25,12 @@ const Manage = () => {
     setIsLoading(true)
     const loadPatients = async () => {
       try {
-        setBaseUrl('https://pms-backend-v1.herokuapp.com')
-        const baseUrlReq = 'https://pms-backend-v1.herokuapp.com'
+        setBaseUrl(process.env.REACT_APP_API_BASEURL)
         const config = {
           headers: { 'content-type': 'multipart/form-data' },
         }
         const patientsReq = await axios(
-          `${baseUrlReq}/patients/${patientName}`,
+          `${baseUrl}/patients/${patientName}`,
           config,
         )
         console.log(patientsReq.data)
@@ -76,10 +75,7 @@ const Manage = () => {
                   <div className="resultSingle" key={patient._id}>
                     <div className="avatarBox-sm">
                       {imgErr !== true ? (
-                        <img
-                          src={baseUrl + '/' + patient.avatar}
-                          alt={patient.firstName}
-                        />
+                        <img src={patient.avatar} alt={patient.firstName} />
                       ) : (
                         <img src={User} alt={patient.firstName} />
                       )}
